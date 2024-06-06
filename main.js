@@ -38,10 +38,10 @@ async function loadIfc() {
   world.scene.three.add(model);
   //CLASSIFIER :
   const classifier = components.get(OBC.Classifier);
-  classifier.byEntity(model); //1
-  classifier.byIfcRel(model, WEBIFC.IFCRELCONTAINEDINSPATIALSTRUCTURE, "storeys"); //2
-  classifier.byIfcRel(model, WEBIFC.IFCPROPERTY, "prop"); //3
-  console.log(classifier); // it finds 1 and 2, but not 3. Doesn't work with WEBIFC.IFCPROPERTYSET either
+  classifier.byEntity(model);
+  classifier.byIfcRel(model, WEBIFC.IFCRELCONTAINEDINSPATIALSTRUCTURE, "storeys");
+  classifier.byIfcRel(model, WEBIFC.IFCRELDEFINESBYPROPERTIES, "prop");
+  console.log(classifier); //works fine
   const stairs = classifier.find({
     entities: ["IFCSTAIR"],
   });
@@ -52,8 +52,8 @@ async function loadIfc() {
   });
   console.log(storeys); // doesn't find it, although it does exist in console.log(classifier)
   const prop = classifier.find({
-    entities: ["whatever prop"]
+    entities: ["Pset_ManufacturerTypeInformation"]
   });
-  console.log(prop); // obviously doesn't work because it doesn't even exist in console.log(classifier)
+  console.log(prop); // doesn't find it, although it does exist in console.log(classifier)
 };
 loadIfc();
